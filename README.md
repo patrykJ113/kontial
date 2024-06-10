@@ -13,7 +13,7 @@ You can change everything in the code. Important is only that the micro service 
 - Maven 3+
 
 ## Tasks
-0. __PERSISTENCE.__ Implement a persistence layer with Spring Boot by using an file-based database like H2 (recommended, but you can choose other portable file-based database if you want). Persist the example data listed in the class `InMemoryDataSource` to the database. Implement persistence / database access classes to create, read, update and delete those data entries. 
+0. __PERSISTENCE.__ Implement a persistence layer with Spring Boot by using an file-based database like H2 (recommended, but you can choose other portable file-based database if you want). Persist the example data listed in the class `InMemoryDataSource` to the database. Implement persistence / database access classes to create, read, update and delete those data entries (basic CRUD operations). 
 
 1. __BACKEND.__ Implement a new REST API endpoint `GET /api/persons/summary` that counts and sorts (ascending by name) the existing names and returns a response e. g.
 ```json
