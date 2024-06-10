@@ -2,7 +2,7 @@
 
 ## About
 This micro service provides REST APIs for person management. The REST API response format is always JSON. 
-The data is stored in a portable database like H2 to keep it simple in this example. There is one existing REST API `GET /api/persons` which returns all existing persons.
+The data is stored in a portable file-based database like H2 to keep it simple in this example. There is one existing REST API `GET /api/persons` which returns all existing persons.
 
 ## Notice
 You can change everything in the code. Important is only that the micro service is working as described. 
