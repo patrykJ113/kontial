@@ -2,16 +2,19 @@
 
 ## About
 This micro service provides REST APIs for person management. The REST API response format is always JSON. 
-The data is stored in-memory to keep it simple in this example. There is one existing REST API `GET /api/persons` which returns all existing persons.
+The data is stored in a portable database like H2 to keep it simple in this example. There is one existing REST API `GET /api/persons` which returns all existing persons.
 
 ## Notice
 You can change everything in the code. Important is only that the micro service is working as described. 
 
 ## Requirements
+- Spring Boot 3+
 - Java 17+
 - Maven 3+
 
 ## Tasks
+Preparation. __PERSISTENCE.__ Implement a persistence layer with Spring Boot by using a in-memory database like H2 (recommended, but you can choose other portable database if you want). Persist the example data listed in the class `InMemoryDataSource` to the database. Implement persistence / database access classes to create, read, update and delete those data entries. 
+
 1. __BACKEND.__ Implement a new REST API endpoint `GET /api/persons/summary` that counts and sorts (ascending by name) the existing names and returns a response e. g.
 ```json
 {
