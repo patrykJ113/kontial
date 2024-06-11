@@ -25,10 +25,9 @@ You can change everything in the code. Important is only that the micro service 
 }
 ```
 
-Using __Java streams__ is the highly preferred solution. If the solution with Java streams is not possible other ways are allowed.
 Validate your solution by using unit tests. 
 
-2. __BACKEND.__ Add a new field to the class `Person` called `birthday` (e. g. 25-12-1985) and use a suitable data type. Add different birthdays to all the persons in the in-memory data.
+2. __BACKEND.__ Add a new field to the entity `Person` called `birthday` (e. g. 25-12-1985) and use a suitable data type. Add different birthdays to all the persons in the database.
 Change the existing REST API `GET /api/persons` and show only the birth year , e. g.
 ```json
 [
@@ -51,10 +50,7 @@ Change the existing REST API `GET /api/persons` and show only the birth year , e
 ]
 ```
 
-Using __Java streams__ is the highly preferred solution. If the solution with Java streams is not possible other ways are allowed.
-
-3. __BACKEND.__ Implement a new REST API `POST /api/person` that adds a new person in the in-memory data.
-Consider that the data is in-memory and not exclusively locked if there are simultaneous calls. The person is defined in the REST API / HTTP body as:
+3. __BACKEND.__ Implement a new REST API `POST /api/person` that adds a new person to the database. The person is defined in the REST API / HTTP body as:
 
 ```json
 {
@@ -64,7 +60,7 @@ Consider that the data is in-memory and not exclusively locked if there are simu
 }
 ```
 
-Validate if the fields are correct (name not empty, valid birthday format, id length is starting with a character followed by four digits) and that the id is unique in the in-memory data.
+Validate if the fields are correct (name not empty, valid birthday format, id length is starting with a character followed by four digits) and that the id is unique in the database.
 
 The REST API returns `HTTP OK 200` on success, `HTTP BAD REQUEST 400` on format validation or unique errors 
 and `HTTP INTERNAL ERROR 500` on all other internal server errots.
@@ -79,7 +75,7 @@ and `HTTP INTERNAL ERROR 500` on all other internal server errots.
 
 Using a CSS framework like Bootstrap, TailwindCSS, etc. is not required but you can use one if you want to.
 
-5. Questions (do not implement, write your solution only as text)
+5. __Questions__ (do not implement, write your solution only as text)
 - How do you validate that your code is working properly and why?
 - How would you store multiple documents (> 5 MB) for persons and why?
 - How would you integrate a authentication for the REST APIs? Which authentication would you use and why?
