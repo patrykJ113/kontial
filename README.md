@@ -67,7 +67,7 @@ The REST API returns `HTTP OK 200` on success, `HTTP BAD REQUEST 400` on format 
 and `HTTP INTERNAL ERROR 500` on all other internal server errots.
 
 4. __FRONTEND.__ Create a new Angular app with TailwindCSS from scratch with following features:
-- A representive Tailwind CSS UI is implemented 
+- A representive Tailwind CSS UI is implemented with separate routes for every folling pages. 
 - Add a new page with a form for creating new persons with three inputs: `id`, `name` and `birthday`.
   - Add a client side validation UI for these fields as described in the task before. 
   - Implement a REST API call to create this new person in the backend service. 
