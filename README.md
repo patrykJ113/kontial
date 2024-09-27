@@ -1,7 +1,7 @@
-# Person Micro Service
+# Person Micro Service with UI
 
 ## About
-This micro service provides REST APIs for person management. The REST API response format is always JSON. 
+This micro service provides REST APIs and Angular App for person management. The REST API response format is always JSON. 
 The data is stored in a portable file-based database like H2 to keep it simple in this example. There is one existing REST API `GET /api/persons` which returns all existing persons.
 
 ## Notice
@@ -9,6 +9,7 @@ You can change everything in the code. Important is only that the micro service 
 
 ## Requirements
 - Spring Boot 3+
+- Tailwind 3+
 - Java 17+
 - Maven 3+
 
@@ -65,15 +66,16 @@ Validate if the fields are correct (name not empty, valid birthday format, id le
 The REST API returns `HTTP OK 200` on success, `HTTP BAD REQUEST 400` on format validation or unique errors 
 and `HTTP INTERNAL ERROR 500` on all other internal server errots.
 
-4. __FRONTEND.__ Create a new Angular app from scratch with following features:
+4. __FRONTEND.__ Create a new Angular app with TailwindCSS from scratch with following features:
+- A representive Tailwind CSS UI is implemented 
 - Add a new page with a form for creating new persons with three inputs: `id`, `name` and `birthday`.
-  - Add a client side validation for these fields as described in the task before. 
+  - Add a client side validation UI for these fields as described in the task before. 
   - Implement a REST API call to create this new person in the backend service. 
   - Handle the backend status codes properly (HTTP 200, 400 and 500) and show related messages in the UI.
   - Show a message if the person is created successfully or there was an error. 
 - Add a new page with a list to show all persons in a table.
-
-Using a CSS framework like Bootstrap, TailwindCSS, etc. is not required but you can use one if you want to.
+  - Add a additional filter input field (text input) to enable a textual filter for person names
+  - The table should be filtered on the fly in the UI
 
 5. __Questions__ (do not implement, write your solution only as text)
 - How do you validate that your code is working properly and why?
