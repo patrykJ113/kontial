@@ -12,8 +12,6 @@ import com.kontial.cloud.service.cloudservice.service.PersonService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,32 +34,6 @@ public class PersonController {
 		return personService.getAllPersons().stream()
 				.map(person -> new PersonSummary(person.getId(), person.getName(), person.getBirthday().getYear()))
 				.collect(Collectors.toList());
-	}
-
-	// Nested class to represent the summary
-	public static class PersonSummary {
-		private String id;
-		private String name;
-		private int year;
-
-		public PersonSummary(String id, String name, int year) {
-			this.id = id;
-			this.name = name;
-			this.year = year;
-		}
-
-		// Getters and Setters
-		public String getId() {
-			return id;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public int getYear() {
-			return year;
-		}
 	}
 
 	@GetMapping("/persons/{id}")
