@@ -1,6 +1,9 @@
 package com.kontial.cloud.service.cloudservice;
 
+import com.kontial.cloud.service.cloudservice.dto.PersonDTO;
+import com.kontial.cloud.service.cloudservice.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +11,9 @@ import com.kontial.cloud.service.cloudservice.model.Person;
 import com.kontial.cloud.service.cloudservice.service.PersonService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,9 +72,19 @@ public class PersonController {
 	}
 
 	@PostMapping("/persons")
-	public ResponseEntity<Person> createPerson(@RequestBody Person person) {
-		Person createdPerson = personService.createPerson(person);
-		return ResponseEntity.ok(createdPerson);
+	public ResponseEntity<?> createPerson(@RequestBody PersonDTO personDTO) {
+		try {
+			DateConverter dc = new DateConverter();
+			LocalDate birthday = dc.convertToLocalDate(personDTO.getBirthday());
+			Person person = new Person(personDTO.getId(), personDTO.getName(), birthday);
+			personService.createPerson(person);
+			return new ResponseEntity<>("Person added successfully", HttpStatus.OK);
+		} catch (ValidationException e) {
+			return new ResponseEntity<>(e.getData(), HttpStatus.BAD_REQUEST);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PutMapping("/persons/{id}")
