@@ -1,13 +1,13 @@
 package com.kontial.cloud.service.cloudservice.service;
 
-import com.kontial.cloud.service.cloudservice.exceptions.ValidationException;
+import com.kontial.cloud.service.cloudservice.exception.PersonNotFoundException;
+import com.kontial.cloud.service.cloudservice.exception.ValidationException;
 import com.kontial.cloud.service.cloudservice.model.Person;
 import com.kontial.cloud.service.cloudservice.repository.PersonRepository;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,42 +29,76 @@ public class PersonService {
     }
 
     public List<Person> getAllPersons() {
-        return personRepository.findAll();
+        try {
+            return personRepository.findAll();
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error retrieving persons from the database");
+        }
     }
 
     public Optional<Person> getPersonById(String id) {
-        return personRepository.findById(id);
+        if (!personRepository.existsById(id)) {
+            throw new PersonNotFoundException("Person not found with ID: " + id);
+        }
+        try {
+            return personRepository.findById(id);
+        } catch (PersonNotFoundException e) {
+            throw new RuntimeException("Error geting person");
+        }
     }
 
     public Person createPerson(Person person) throws Exception {
         validatePerson(person);
-        return personRepository.save(person);
+        try {
+            return personRepository.save(person);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error creating person");
+        }
     }
 
     public Person updatePerson(String id, Person updatedPerson) {
-        return personRepository.save(updatedPerson);
+        if (!personRepository.existsById(id)) {
+            throw new PersonNotFoundException("Person not found with ID: " + id);
+        }
+        try {
+            updatedPerson.setId(id);
+            return personRepository.save(updatedPerson);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error updating person");
+        }
     }
 
     public void deletePerson(String id) {
-        personRepository.deleteById(id);
+        if (!personRepository.existsById(id)) {
+            throw new PersonNotFoundException("Person not found with ID: " + id);
+        }
+        try {
+            personRepository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error deleting person from the database");
+        }
     }
 
     public Map<String, Long> getPersonNameSummary() {
-        List<Person> allPersons = personRepository.findAll();
+        try {
+            List<Person> allPersons = personRepository.findAll();
 
-        return allPersons.stream()
-                .collect(Collectors.groupingBy(
-                        Person::getName,
-                        Collectors.counting()
-                ))
-                .entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue,
-                        java.util.LinkedHashMap::new
-                ));
+            return allPersons.stream()
+                    .collect(Collectors.groupingBy(
+                            Person::getName,
+                            Collectors.counting()
+                    ))
+                    .entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            Map.Entry::getValue,
+                            (oldValue, newValue) -> oldValue,
+                            java.util.LinkedHashMap::new
+                    ));
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error when retrieving person name summary from the database");
+        }
     }
 
     private void validatePerson(Person person) throws Exception {
@@ -93,19 +127,5 @@ public class PersonService {
         }
 
     }
-
-//    private boolean isValidBirthday(LocalDate birthday) {
-//
-//        if (birthday == null) {
-//            return false;
-//        }
-//
-//        try {
-//            // Check if birthday is in the correct format (dd-MM-yyyy)
-//            birthday.format(DATE_FORMAT);
-//            return true;
-//        } catch (DateTimeParseException e) {
-//            return false;
-//        }
-//    }
+    
 }

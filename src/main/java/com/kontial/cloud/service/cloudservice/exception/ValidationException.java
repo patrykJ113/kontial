@@ -1,4 +1,4 @@
-package com.kontial.cloud.service.cloudservice.exceptions;
+package com.kontial.cloud.service.cloudservice.exception;
 
 import java.util.Map;
 

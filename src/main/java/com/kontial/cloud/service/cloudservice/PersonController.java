@@ -1,7 +1,6 @@
 package com.kontial.cloud.service.cloudservice;
 
 import com.kontial.cloud.service.cloudservice.dto.PersonDTO;
-import com.kontial.cloud.service.cloudservice.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,23 +43,20 @@ public class PersonController {
 	}
 
 	@PostMapping("/persons")
-	public ResponseEntity<?> createPerson(@RequestBody PersonDTO personDTO) {
-		try {
+	public ResponseEntity<?> createPerson(@RequestBody PersonDTO personDTO) throws Exception{
+
 			DateConverter dc = new DateConverter();
 			LocalDate birthday = dc.convertToLocalDate(personDTO.getBirthday());
 			Person person = new Person(personDTO.getId(), personDTO.getName(), birthday);
 			personService.createPerson(person);
-			return new ResponseEntity<>("Person added successfully", HttpStatus.OK);
-		} catch (ValidationException e) {
-			return new ResponseEntity<>(e.getData(), HttpStatus.BAD_REQUEST);
-		}
-		catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+			return new ResponseEntity<>("Person added successfully", HttpStatus.CREATED);
 	}
 
 	@PutMapping("/persons/{id}")
-	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody Person person) {
+	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody PersonDTO personDTO) {
+		DateConverter dc = new DateConverter();
+		LocalDate birthday = dc.convertToLocalDate(personDTO.getBirthday());
+		Person person = new Person(personDTO.getId(), personDTO.getName(), birthday);
 		Person updatedPerson = personService.updatePerson(id, person);
 		return ResponseEntity.ok(updatedPerson);
 	}
