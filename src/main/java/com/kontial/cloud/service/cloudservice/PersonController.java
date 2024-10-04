@@ -1,5 +1,6 @@
 package com.kontial.cloud.service.cloudservice;
 
+import com.kontial.cloud.service.cloudservice.contoller.PersonSummary;
 import com.kontial.cloud.service.cloudservice.dto.PersonDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

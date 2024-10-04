@@ -1,4 +1,4 @@
-package com.kontial.cloud.service.cloudservice;
+package com.kontial.cloud.service.cloudservice.contoller;
 
 public class PersonSummary {
     private String id;
