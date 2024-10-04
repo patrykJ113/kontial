@@ -30,6 +30,7 @@ public class PersonController {
 	}
 
 	@GetMapping("/persons")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public List<PersonSummary> getAllPersons() {
 		return personService.getAllPersons().stream()
 				.map(person -> new PersonSummary(person.getId(), person.getName(), person.getBirthday().getYear()))
@@ -37,6 +38,7 @@ public class PersonController {
 	}
 
 	@GetMapping("/persons/{id}")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<Person> getPersonById(@PathVariable String id) {
 		Optional<Person> person = personService.getPersonById(id);
 		return person.map(ResponseEntity::ok)
@@ -44,6 +46,7 @@ public class PersonController {
 	}
 
 	@PostMapping("/persons")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<?> createPerson(@RequestBody PersonDTO personDTO) throws Exception{
 
 			DateConverter dc = new DateConverter();
@@ -54,6 +57,7 @@ public class PersonController {
 	}
 
 	@PutMapping("/persons/{id}")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody PersonDTO personDTO) {
 		DateConverter dc = new DateConverter();
 		LocalDate birthday = dc.convertToLocalDate(personDTO.getBirthday());
@@ -63,12 +67,14 @@ public class PersonController {
 	}
 
 	@DeleteMapping("/persons/{id}")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<Void> deletePerson(@PathVariable String id) {
 		personService.deletePerson(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/persons/summary")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public Map<String, Long> getPersonNameSummary() {
 		return personService.getPersonNameSummary();
 	}
