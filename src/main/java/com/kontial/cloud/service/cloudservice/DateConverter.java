@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class DateConverter {
-    private static final String DATE_FORMAT = "dd-MM-yyyy";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     public LocalDate convertToLocalDate(String birthdayStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);

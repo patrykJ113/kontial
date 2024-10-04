@@ -7,7 +7,6 @@ import com.kontial.cloud.service.cloudservice.repository.PersonRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,6 @@ public class PersonService {
     private final PersonRepository personRepository;
 
     private static final String ID_REGEX = "^[a-zA-Z]\\d{4}$";
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
