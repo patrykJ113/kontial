@@ -12,25 +12,25 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<String> handleGeneralException(Exception e) {
-        return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public String handleGeneralException(Exception e) {
+        return "An error occurred: " + e.getMessage();
     }
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Map<String, String>> handleValidationException(ValidationException e) {
-        return new ResponseEntity<>(e.getData(), HttpStatus.BAD_REQUEST);
+    public Map<String, String> handleValidationException(ValidationException e) {
+        return e.getData();
     }
 
     @ExceptionHandler(PersonNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handlePersonNotFoundException(PersonNotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handlePersonNotFoundException(PersonNotFoundException e) {
+        return e.getMessage();
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleRuntimeException(RuntimeException e) {
+        return e.getMessage();
     }
 }
