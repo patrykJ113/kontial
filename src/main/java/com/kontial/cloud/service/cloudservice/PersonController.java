@@ -12,6 +12,7 @@ import com.kontial.cloud.service.cloudservice.service.PersonService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -47,18 +48,21 @@ public class PersonController {
 
 	@PostMapping("/persons")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public ResponseEntity<?> createPerson(@RequestBody PersonDTO personDTO) throws Exception{
+	public ResponseEntity<Map<String, String>> createPerson(@RequestBody PersonDTO personDTO) throws Exception{
 
 			DateConverter dc = new DateConverter();
 			LocalDate birthday = dc.convertToLocalDate(personDTO.getBirthday());
 			Person person = new Person(personDTO.getId(), personDTO.getName(), birthday);
 			personService.createPerson(person);
-			return new ResponseEntity<>("Person added successfully", HttpStatus.CREATED);
+
+			Map<String, String> response = new HashMap<>();
+			response.put("message", "Person added successfully");
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/persons/{id}")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody PersonDTO personDTO) {
+	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody PersonDTO personDTO) throws Exception{
 		DateConverter dc = new DateConverter();
 		LocalDate birthday = dc.convertToLocalDate(personDTO.getBirthday());
 		Person person = new Person(personDTO.getId(), personDTO.getName(), birthday);

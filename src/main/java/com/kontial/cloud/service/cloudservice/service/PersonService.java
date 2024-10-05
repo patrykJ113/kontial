@@ -41,39 +41,40 @@ public class PersonService {
         try {
             return personRepository.findById(id);
         } catch (PersonNotFoundException e) {
-            throw new RuntimeException("Error geting person");
+            throw new RuntimeException("Error when getting  person");
         }
     }
 
     public Person createPerson(Person person) throws Exception {
-        validatePerson(person);
+        validatePerson(person, true);
         try {
             return personRepository.save(person);
         } catch (RuntimeException e) {
-            throw new RuntimeException("Error creating person");
+            throw new RuntimeException("Something went wrong on our side when creating a new Person. Please try again later.");
         }
     }
 
-    public Person updatePerson(String id, Person updatedPerson) {
+    public Person updatePerson(String id, Person updatedPerson) throws Exception {
+        validatePerson(updatedPerson, false);
         if (!personRepository.existsById(id)) {
-            throw new PersonNotFoundException("Person not found with ID: " + id);
+            throw new PersonNotFoundException("Person with ID: " + id + " was not found");
         }
         try {
             updatedPerson.setId(id);
             return personRepository.save(updatedPerson);
         } catch (RuntimeException e) {
-            throw new RuntimeException("Error updating person");
+            throw new RuntimeException("Something went wrong on our side when updating Person. Please try again later.");
         }
     }
 
     public void deletePerson(String id) {
         if (!personRepository.existsById(id)) {
-            throw new PersonNotFoundException("Person not found with ID: " + id);
+            throw new PersonNotFoundException("Person with ID: " + id + " was not found");
         }
         try {
             personRepository.deleteById(id);
         } catch (DataAccessException e) {
-            throw new RuntimeException("Error deleting person from the database");
+            throw new RuntimeException("Something went wrong on our side when deleting Person. Please try again later.");
         }
     }
 
@@ -99,7 +100,7 @@ public class PersonService {
         }
     }
 
-    private void validatePerson(Person person) throws Exception {
+    private void validatePerson(Person person, Boolean checkId) throws Exception {
         Pattern pattern = Pattern.compile(ID_REGEX);
         Matcher matcher = pattern.matcher(person.getId());
         HashMap<String, String> errors = new HashMap<>();
@@ -113,11 +114,11 @@ public class PersonService {
         }
 
         if(!matcher.matches()) {
-            errors.put("ID", "must start with a letter and be followed by 4 digits");
+            errors.put("id", "ID must start with a letter and be followed by 4 digits");
         }
 
-        if (personRepository.existsById(person.getId())) {
-            errors.put("id", "ID Already exists");
+        if (checkId && personRepository.existsById(person.getId())) {
+            errors.put("exists", "ID Already exists");
         }
 
         if(!errors.isEmpty()) {

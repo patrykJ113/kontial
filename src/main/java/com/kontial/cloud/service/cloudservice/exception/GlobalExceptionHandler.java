@@ -4,33 +4,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleGeneralException(Exception e) {
-        return "An error occurred: " + e.getMessage();
+    public ResponseEntity<String> handleGeneralException(Exception e) {
+        return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(ValidationException e) {
-        return e.getData();
+    public ResponseEntity<Map<String, String>> handleValidationException(ValidationException e) {
+        return new ResponseEntity<>(e.getData(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PersonNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handlePersonNotFoundException(PersonNotFoundException e) {
-        return e.getMessage();
+    public ResponseEntity<String> handlePersonNotFoundException(PersonNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleRuntimeException(RuntimeException e) {
-        return e.getMessage();
+    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
