@@ -32,10 +32,13 @@ public class PersonController {
 
 	@GetMapping("/persons")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public List<PersonSummary> getAllPersons() {
-		return personService.getAllPersons().stream()
-				.map(person -> new PersonSummary(person.getId(), person.getName(), person.getBirthday().getYear()))
-				.collect(Collectors.toList());
+	public List<?> getAllPersons(@RequestParam(name = "date", required = false) String date) {
+		if("year".equalsIgnoreCase(date)) {
+			return personService.getAllPersons().stream()
+					.map(person -> new PersonSummary(person.getId(), person.getName(), person.getBirthday().getYear()))
+					.collect(Collectors.toList());
+		}
+		return personService.getAllPersons();
 	}
 
 	@GetMapping("/persons/{id}")
